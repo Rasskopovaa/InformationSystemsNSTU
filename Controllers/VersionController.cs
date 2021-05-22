@@ -7,7 +7,11 @@ namespace lab1.Controllers
     [ApiController]
     public class VersionController : ControllerBase
     {
+
         // GET api/values
+
+        
+
         [HttpGet]
         public ActionResult<string> Get()
         {
