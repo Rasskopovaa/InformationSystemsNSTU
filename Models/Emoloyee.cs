@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using lab1.Storage;
 
  namespace lab1.Models
  {
  public class Employee
  {
-     public int id{ get; set; }
+     public Guid Id { get; set; } = Guid.Empty;
       public string surname { get; set; }
       public string name { get; set; }
       public int age { get; set; }
