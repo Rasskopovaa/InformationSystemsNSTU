@@ -15,15 +15,6 @@ using lab1.Storage;
       public bool sex { get; set; }
       public string position { get; set; } 
      
-
-     public Employee(int Id, string Surname, string Name, int Age, bool Sex, string Position){
-         id=Id;
-          surname=Surname;
-          name=Name;
-          age=Age;
-          sex=Sex;
-          position=Position;
-     }
 public BaseModelValidationResult Validate()
         {
             var validationResult = new BaseModelValidationResult();

@@ -5,11 +5,11 @@ using lab1.Models;
 
 namespace lab1.Storage
 {
-    public class MemCache : IStorage<LabData>
+    public class MemCache : IStorage<Employee>
     {
         private object _sync = new object();
-        private List<LabData> _memCache = new List<LabData>();
-        public LabData this[Guid id] 
+        private List<Employee> _memCache = new List<Employee>();
+        public Employee this[Guid id] 
         { 
             get
             {
@@ -37,9 +37,9 @@ namespace lab1.Storage
             }
         }
 
-        public System.Collections.Generic.List<LabData> All => _memCache.Select(x => x).ToList();
+        public System.Collections.Generic.List<Employee> All => _memCache.Select(x => x).ToList();
 
-        public void Add(LabData value)
+        public void Add(Employee value)
         {
             if (value.Id != Guid.Empty) throw new IncorrectLabDataException($"Cannot add value with predefined id {value.Id}");
 
