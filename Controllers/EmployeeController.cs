@@ -11,6 +11,13 @@ namespace lab1.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+         private IStorage<Employee> _memCache;
+
+       public ValuesController(IStorage<Employee> memCache)
+       {
+           _memCache = memCache;
+       }
+
         private static List<Employee> _employee = new List<Employee>();
         // GET api/values
         [HttpGet]
