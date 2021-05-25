@@ -11,12 +11,12 @@ namespace lab1.Storage
     {
         private Timer _timer;
 
-        public string NameOfFile { get; }
+        public string FileName { get; }
         public int FlushPeriod { get; }
 
-        public FileStorage(string NameOfFile, int flushPeriod)
+        public FileStorage(string fileName, int flushPeriod)
         {
-         NameOfFile = NameOfFile;
+            FileName = fileName;
             FlushPeriod = flushPeriod;
 
             Load();
@@ -26,13 +26,13 @@ namespace lab1.Storage
 
         private void Load()
         {
-            if (File.Exists NameOfFile))
+            if (File.Exists(FileName))
             {
-                var allLines = File.ReadAllText NameOfFile);
+                var allLines = File.ReadAllText(FileName);
 
                 try
                 {
-                    var deserialized = JsonConvert.DeserializeObject<List<LabData>>(allLines);
+                    var deserialized = JsonConvert.DeserializeObject<List<Employee>>(allLines);
 
                     if (deserialized != null)
                     {
@@ -44,7 +44,7 @@ namespace lab1.Storage
                 }
                 catch (Exception ex)
                 {
-                    throw new FileLoadException($"Cannot load data from file  NameOfFile}:\r\n{ex.Message}");
+                    throw new FileLoadException($"Cannot load data from file {FileName}:\r\n{ex.Message}");
                 }
             }
         }
@@ -53,7 +53,7 @@ namespace lab1.Storage
         {
             var serializedContents = JsonConvert.SerializeObject(All);
 
-            File.WriteAllText NameOfFile, serializedContents);
+            File.WriteAllText(FileName, serializedContents);
         }
     }
 }
