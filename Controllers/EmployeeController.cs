@@ -12,29 +12,26 @@ namespace lab1.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-         private IStorage<Employee> _memCache;
+         private IStorage<Employee> _employeee;
 
-       public ValuesController(IStorage<Employee> memCache)
+       public ValuesController(IStorage<Employee> employee)
        {
-           _memCache = memCache;
+           _employee = employee;
        }
 
-        private static List<Employee> _employee = new List<Employee>();
-        // GET api/values
-        [HttpGet]
+       [HttpGet]
         public ActionResult<IEnumerable<Employee>> Get()
         {
             return Ok(_employee);
         }
-        // GET api/values/5
+
         [HttpGet("{id}")]
-        public ActionResult<Employee> Get(int id)
+        public ActionResult<Employee> Get(Guid id)
         {
-            if (_employee.Count <= id) return NotFound("Такого нет");
+            if (!_employee.Has(id)) return NotFound("No such");
+
             return Ok(_employee[id]);
         }
-
-
         // POST api/values
         [HttpPost]
         public IActionResult Post([FromBody] Employee value)
