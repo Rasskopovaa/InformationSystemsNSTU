@@ -12,7 +12,7 @@ namespace lab1.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-         private IStorage<Employee> _employeee;
+         private IStorage<Employee> _employee;
 
        public ValuesController(IStorage<Employee> employee)
        {
