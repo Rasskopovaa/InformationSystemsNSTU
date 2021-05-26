@@ -1,4 +1,5 @@
-﻿using System;
+﻿ 
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -12,59 +13,63 @@ namespace lab1.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-         private IStorage<Employee> _employee;
+         private IStorage<Employee> _memCache;
 
-       public ValuesController(IStorage<Employee> employee)
-       {
-           _employee = employee;
-       }
+        public ValuesController(IStorage<Employee> memCache)
+        {
+            _memCache = memCache;
+        }
 
-       [HttpGet]
+        [HttpGet]
         public ActionResult<IEnumerable<Employee>> Get()
         {
-            return Ok(_employee);
+            return Ok(_memCache.All);
         }
 
         [HttpGet("{id}")]
         public ActionResult<Employee> Get(Guid id)
         {
-            if (!_employee.Has(id)) return NotFound("No such");
+            if (!_memCache.Has(id)) return NotFound("No such");
 
-            return Ok(_employee[id]);
+            return Ok(_memCache[id]);
         }
-        // POST api/values
+
         [HttpPost]
         public IActionResult Post([FromBody] Employee value)
         {
-             var validationResult = value.Validate();
-             if (!validationResult.IsValid) return BadRequest(validationResult.Errors);
-
-             _employee.Add(value);
-
-            return Ok($"{value.ToString()} был добавлен");
-        }
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Employee value)
-        {  
-            if (_employee.Count <= id) return NotFound("Такого нет");
-           var validationResult = value.Validate();
+            var validationResult = value.Validate();
 
             if (!validationResult.IsValid) return BadRequest(validationResult.Errors);
 
-            var previousValue = _employee[id];
-          _employee[id]=value;
-          return Ok($"{previousValue.ToString()} был обновлён {value.ToString()}");
-        }
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            if (_employee.Count <= id) return  NotFound("Такого нет");
-            var valueToRemove = _employee[id];
-            _employee.RemoveAt(id);
+            _memCache.Add(value);
 
-            return Ok($"{valueToRemove.ToString()} был удалён");
+            return Ok($"{value.ToString()} has been added");
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(Guid id, [FromBody] Employee value)
+        {
+            if (!_memCache.Has(id)) return NotFound("No such");
+
+            var validationResult = value.Validate();
+
+            if (!validationResult.IsValid) return BadRequest(validationResult.Errors);
+
+            var previousValue = _memCache[id];
+            _memCache[id] = value;
+
+            return Ok($"{previousValue.ToString()} has been updated to {value.ToString()}");
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            if (!_memCache.Has(id)) return NotFound("No such");
+
+            var valueToRemove = _memCache[id];
+            _memCache.RemoveAt(id);
+
+            return Ok($"{valueToRemove.ToString()} has been removed");
         }
     }
 }
